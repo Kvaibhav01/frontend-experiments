@@ -1,28 +1,26 @@
-"use client";
+'use client';
 
-import { useEffect, useRef } from "react";
-import CardParallax from "./components/card-parallax";
-import CardScale from "./components/card-scale";
-import { projects } from "./data";
-import styles from "./page.module.scss";
-import { useScroll } from "framer-motion";
-import Lenis from "@studio-freight/lenis";
+import { useEffect, useRef } from 'react';
+import CardParallax from './components/card-parallax';
+import CardScale from './components/card-scale';
+import { projects } from './data';
+import styles from './page.module.scss';
+import { useScroll } from 'framer-motion';
+import Lenis from '@studio-freight/lenis';
 
 export default function Home() {
   const container = useRef(null);
   const { scrollYProgress } = useScroll({
     target: container,
-    offset: ["start start", "end end"],
+    offset: ['start start', 'end end'],
   });
 
   useEffect(() => {
     const lenis = new Lenis();
-
     function raf(time) {
       lenis.raf(time);
       requestAnimationFrame(raf);
     }
-
     requestAnimationFrame(raf);
   }, []);
 

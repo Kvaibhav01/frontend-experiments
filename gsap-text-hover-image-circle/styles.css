@@ -1,0 +1,107 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100vh;
+  font-family: 'Apex MK3', sans-serif;
+  background: #0e0e0e;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+nav,
+footer {
+  position: fixed;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 1em;
+  text-transform: uppercase;
+  font-size: 30px;
+  color: #fff;
+}
+
+a {
+  text-decoration: none;
+  color: #fff;
+}
+
+a:hover {
+  color: #e4974d;
+  transition: ease-in all 0.1s;
+}
+
+nav {
+  top: 0;
+}
+
+footer {
+  bottom: 0;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.gallery {
+  pointer-events: none;
+}
+
+.item {
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 70px;
+  background: #b0b0b0;
+  margin: 10px;
+  opacity: 0;
+}
+
+.hero-copy {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.hero-copy p {
+  font-size: 50px;
+  font-family: 'N27';
+  color: #eeeeee;
+  text-align: center;
+  letter-spacing: -0.04em;
+  line-height: 110%;
+}
+
+.hero-copy p span {
+  cursor: pointer;
+  font-family: 'Nyght Serif';
+  font-weight: 100;
+  font-style: oblique;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+}
+
+.hero-copy p span:hover {
+  color: #f38e30;
+  font-weight: 500;
+  transition: ease-in all 0.1s;
+}

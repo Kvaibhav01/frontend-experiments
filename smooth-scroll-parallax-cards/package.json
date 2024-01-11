@@ -11,6 +11,7 @@
   "dependencies": {
     "@studio-freight/lenis": "^1.0.29",
     "framer-motion": "^10.16.7",
+    "geist": "^1.2.0",
     "next": "14.0.3",
     "react": "^18",
     "react-dom": "^18",
