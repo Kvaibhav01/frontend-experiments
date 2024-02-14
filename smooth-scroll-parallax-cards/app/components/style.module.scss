@@ -17,7 +17,7 @@
 
     h2 {
       margin: 0;
-      font-size: 32px;
+      font-size: 40px;
       font-weight: 500;
       letter-spacing: 0.4px;
     }
@@ -31,6 +31,8 @@
       .description {
         width: 50%;
         position: relative;
+        font-size: 20px;
+        opacity: 0.8;
         // top: 10%;
 
         // p {
@@ -47,9 +49,10 @@
           gap: 5px;
 
           a {
-            font-size: 14px;
+            font-size: 16px;
             cursor: pointer;
             text-decoration: none;
+            color: #000;
           }
         }
       }
