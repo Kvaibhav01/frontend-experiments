@@ -1,12 +1,14 @@
 import { Dispatch, SetStateAction } from "react";
 
-export type ColumnProps = {
+export interface ColumnProps {
   title: string;
   headingColor: string;
+  column: string;
   cards: CardType[];
-  column: ColumnType;
   setCards: Dispatch<SetStateAction<CardType[]>>;
-};
+  isSelected?: boolean;
+  onAddClick?: (column: string) => void;
+}
 
 export type CardType = {
   title: string;
@@ -28,4 +30,5 @@ export type CardProps = CardType & {
 export type AddCardProps = {
   column: ColumnType;
   setCards: Dispatch<SetStateAction<CardType[]>>;
+  onAddClick?: () => void;
 };

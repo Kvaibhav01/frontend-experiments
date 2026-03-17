@@ -1,10 +1,28 @@
 import { useState } from "react";
 import Column from "./Column";
 import BurnBarrel from "./BurnBarrel";
-import DEFAULT_CARDS from "../utils/card-data";
+import { useKeyboardShortcuts } from "../hooks/useKeyboardShortcuts";
+import { CardType } from "../utils/types";
+// import DEFAULT_CARDS from "../utils/card-data";
 
 const Board = () => {
-  const [cards, setCards] = useState(DEFAULT_CARDS);
+  const [cards, setCards] = useState<CardType[]>([]);
+
+  const handleAddTask = (column: string) => {
+    const addButton = document.querySelector(
+      `[data-column="${column}"] button[role="add-card"]`,
+    );
+    if (addButton) {
+      (addButton as HTMLButtonElement).click();
+    }
+  };
+
+  const { selectedColumn } = useKeyboardShortcuts({
+    onAddTask: handleAddTask,
+    onMoveTaskLeft: () => {},
+    onMoveTaskRight: () => {},
+    onDeleteTask: () => {},
+  });
 
   // Use this code for preserving state using localStorage:
   // const [hasChecked, setHasChecked] = useState(false);
@@ -27,6 +45,8 @@ const Board = () => {
         column="backlog"
         cards={cards}
         setCards={setCards}
+        isSelected={selectedColumn === "backlog"}
+        onAddClick={handleAddTask}
       />
       <Column
         title="Todo"
@@ -34,6 +54,8 @@ const Board = () => {
         column="todo"
         cards={cards}
         setCards={setCards}
+        isSelected={selectedColumn === "todo"}
+        onAddClick={handleAddTask}
       />
       <Column
         title="Doing"
@@ -41,6 +63,8 @@ const Board = () => {
         column="doing"
         cards={cards}
         setCards={setCards}
+        isSelected={selectedColumn === "doing"}
+        onAddClick={handleAddTask}
       />
       <Column
         title="Done"
@@ -48,6 +72,8 @@ const Board = () => {
         column="done"
         cards={cards}
         setCards={setCards}
+        isSelected={selectedColumn === "done"}
+        onAddClick={handleAddTask}
       />
       <BurnBarrel setCards={setCards} />
     </div>

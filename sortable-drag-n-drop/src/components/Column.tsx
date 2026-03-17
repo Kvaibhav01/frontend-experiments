@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { CardType, ColumnProps } from "../utils/types";
+import { useState, DragEvent } from "react";
+import { CardType, ColumnProps, ColumnType } from "../utils/types";
 import AddCard from "./AddCard";
 import Card from "./Card";
 import DropIndicator from "./DropIndicator";
@@ -10,26 +10,27 @@ const Column = ({
   column,
   cards,
   setCards,
+  isSelected,
 }: ColumnProps) => {
   const [active, setActive] = useState(false);
   const filteredCards = cards.filter((card) => card.column === column);
 
-  const handleDragStart = (e: DragEvent, card: CardType) => {
+  const handleDragStart = (e: DragEvent<HTMLDivElement>, card: CardType) => {
     e.dataTransfer?.setData("cardId", card.id);
   };
 
-  const handleDragOver = (e: DragEvent) => {
+  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     highlightIndicator(e);
     setActive(true);
   };
 
-  const handleDragLeave = () => {
+  const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
     setActive(false);
     clearHighlights();
   };
 
-  const handleDragEnd = (e: DragEvent) => {
+  const handleDragEnd = (e: DragEvent<HTMLDivElement>) => {
     setActive(false);
     clearHighlights();
 
@@ -44,11 +45,9 @@ const Column = ({
       let copy = [...cards];
       let cardToTransfer = copy.find((card) => card.id === cardId);
 
-      if (!cardToTransfer) {
-        return;
-      }
+      if (!cardToTransfer) return;
 
-      cardToTransfer = { ...cardToTransfer, column };
+      cardToTransfer = { ...cardToTransfer, column: column as ColumnType };
       copy = copy.filter((card) => card.id !== cardId);
 
       const moveToBack = before === "-1";
@@ -64,20 +63,24 @@ const Column = ({
     }
   };
 
-  const highlightIndicator = (e: DragEvent) => {
-    const indicators = getIndicators() as HTMLElement[];
+  const highlightIndicator = (e: DragEvent<HTMLDivElement>) => {
+    const indicators = getIndicators();
     clearHighlights(indicators);
     const el = getNearestIndicator(e, indicators);
-    (el.element as HTMLElement).style.opacity = "1";
+    el.element.style.opacity = "1";
   };
 
-  const getIndicators = () => {
-    return Array.from(document.querySelectorAll(`[data-column="${column}"]`));
+  const getIndicators = (): HTMLElement[] => {
+    return Array.from(
+      document.querySelectorAll(`[data-column="${column}"]`),
+    ) as HTMLElement[];
   };
 
   const clearHighlights = (elements?: HTMLElement[]) => {
     const indicators = elements || getIndicators();
-    indicators.forEach((el) => (el.style.opacity = "0"));
+    indicators.forEach((el: HTMLElement) => {
+      el.style.opacity = "0";
+    });
   };
 
   const getNearestIndicator = (e: DragEvent, indicators: HTMLElement[]) => {
@@ -118,7 +121,13 @@ const Column = ({
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDragEnd}
-        className={`h-full w-full transition-colors ${active ? "bg-zinc-800/50" : "bg-zinc-800/0"}`}
+        className={`h-full w-full rounded-lg transition-colors ${
+          active
+            ? "bg-zinc-800/50"
+            : isSelected
+              ? "bg-zinc-800/30"
+              : "bg-zinc-800/0"
+        }`}
       >
         {filteredCards.map((card: any) => {
           return (
@@ -126,7 +135,7 @@ const Column = ({
           );
         })}
         <DropIndicator beforeId={null} column={column} />
-        <AddCard column={column} setCards={setCards} />
+        <AddCard column={column as ColumnType} setCards={setCards} />
       </div>
     </div>
   );

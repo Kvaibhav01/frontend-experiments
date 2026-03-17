@@ -1,11 +1,28 @@
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { motion } from "framer-motion";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { AddCardProps } from "../utils/types";
 
-const AddCard = ({ column, setCards }: AddCardProps) => {
+// import { useKeyboardShortcuts } from "../hooks/useKeyboardShortcuts";
+
+const AddCard = ({ column, setCards, onAddClick }: AddCardProps) => {
   const [text, setText] = useState("");
   const [adding, setAdding] = useState(false);
+
+  useEffect(() => {
+    if (onAddClick) {
+      onAddClick = () => setAdding(true);
+    }
+  });
+
+  // const startAdding = () => setAdding(true);
+
+  // useKeyboardShortcuts({
+  //   onAddTask: startAdding,
+  //   onMoveTaskLeft: () => {},
+  //   onMoveTaskRight: () => {},
+  //   onDeleteTask: () => {},
+  // });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -52,6 +69,7 @@ const AddCard = ({ column, setCards }: AddCardProps) => {
         </>
       ) : (
         <motion.button
+          role="add-card"
           onClick={() => setAdding(true)}
           className="flex w-full items-center gap-1 py-1 text-xs text-zinc-400 transition-colors hover:text-zinc-100"
         >
