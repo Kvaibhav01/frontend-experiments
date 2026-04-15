@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+*:focus {
+  outline: none !important;
+}
+
+*:focus-visible {
+  outline: none !important;
+}
+
+body {
+  font-family: 'Brawler', sans-serif;
+}
