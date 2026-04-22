@@ -1,73 +1,47 @@
-# React + TypeScript + Vite
+# card-fluid-craft
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A fluid, interactive card stack animation built with React, Motion, and GPU-accelerated shader backgrounds. Cards fan out in a stacked deck, each carrying a live generative shader that morphs between an idle and active state as you interact with them.
 
-Currently, two official plugins are available:
+Heavily inspired by [Josh Puckett's](https://x.com/joshpuckett) Interface Craft hero section animation: [interfacecraft.dev](https://www.interfacecraft.dev/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## What it looks like
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Five cards are stacked in a fanned-out deck, each offset by a unique `x`, `y`, and `rotate` value.
+- Clicking a card lifts it to the front and expands the description with an animated reveal.
+- The remaining cards shrink and retreat into the background.
+- Every card carries a GPU shader background that smoothly transitions its parameters between an **idle** and **active** state.
+- Keyboard navigation (← / → arrows, Escape) is fully supported.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Shader backgrounds
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Each card's background is a real-time GLSL shader rendered via [`@paper-design/shaders-react`](https://github.com/paper-design/shaders). Four shader types are used across the five cards:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- **Waves** — animated sine-wave ribbons controlled by `frequency`, `amplitude`, `proportion`, and `softness`
+- **DotGrid** — a grid of dots whose `size`, `gap`, `strokeWidth`, and `opacityRange` pulse on activation
+- **DotOrbit** — particles orbiting in colour-stepped rings, with `spreading` and `speed` shifting on hover
+- **Spiral** — a flowing spiral controlled by `density`, `distortion`, `noise`, and `strokeTaper`
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Each shader component receives its parameters as plain props. The `useSpring` + `useMotionValueEvent` combo interpolates between the `idle` and `active` param objects at 60 fps, so the background never cuts — it *flows* from one configuration to the next.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+--- 
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Tech stack
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **React 19** + **TypeScript**
+- **Motion (motion/react) v12** — animation engine
+- **@paper-design/shaders-react** — GPU shader backgrounds
+- **Tailwind CSS v4** — utility styling
+- **Vite** — build tool
+
+---
+
+## Running locally
+
+```frontend-experiments/card-fluid-craft/package.json#L1-1
+npm install
+npm run dev
 ```
